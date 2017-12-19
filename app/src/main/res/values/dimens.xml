@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="ch640dp">640dp</dimen>
+    <!--<dimen name="design_fab_content_size" tools:override="true">48dp</dimen>-->
+</resources>

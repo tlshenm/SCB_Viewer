@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <!-- 일정 -->
+   <string name="app_id">A000S00021</string>
+	<string name="hello">hello</string>
+</resources>

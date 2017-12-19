@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+     <!--dp/8 (1280 비율) -->
+     <!--*1.6= 256(1024 최대공약수)-->
+    <!--*3 1024 비율-->
+     <!--(dp/5)*1.6*3-->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="ch400dp">384dp</dimen>
+    <dimen name="ch640dp">613dp</dimen>
+    <!--<dimen name="design_fab_content_size" tools:override="true">48dp</dimen>-->
+</resources>
