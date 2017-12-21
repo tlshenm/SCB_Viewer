@@ -6,9 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 /**
+ * 사용안함
  * Created by P093862 on 2017-12-06.
  */
-
 public class SCB_Application extends Application {
 
     private AppStatus mAppStatus = AppStatus.FOREGROUND;

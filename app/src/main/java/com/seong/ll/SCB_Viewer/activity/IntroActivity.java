@@ -14,19 +14,19 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//
-//                Intent intent = new Intent(IntroActivity.this, MainActivity.class);
-//                startActivity(intent);
-//
-//                // 뒤로가기 했을경우 안나오도록 없애주기 >> finish!!
-//                finish();
-//            }
-//        }, 1000);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+                startActivity(intent);
+
+                // 뒤로가기 했을경우 안나오도록 없애주기 >> finish!!
+                finish();
+            }
+        }, 1000);
 
     }
 }
