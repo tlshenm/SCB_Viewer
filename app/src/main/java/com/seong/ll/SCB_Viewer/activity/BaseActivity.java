@@ -94,7 +94,7 @@ public abstract class  BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 좌측메뉴, 좌측슬라이드 보이고 노출되지않도록 설정
+     * 좌측메뉴, 좌측슬라이드 보이고 노출되지않도록 설정!!!!!
      */
     protected void setToolbarGoneLeftMenu() {
         if (mToolbar != null && mDrawerLayout != null) {
