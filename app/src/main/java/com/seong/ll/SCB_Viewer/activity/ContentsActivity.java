@@ -27,15 +27,10 @@ public class ContentsActivity extends BaseActivity {
     private ContentRecyclerViewAdapter mContentAdapter = null;
 
     @Override
-    protected Context getCurrentContext() {
-        return this;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-
+        setToolbarRegister(this,R.id.content_toolbar);
         setToolBarSetting();
         mContentAddFab = (FloatingActionButton) findViewById(R.id.content_add_fab);
         mContentRecycler = (RecyclerView) findViewById(R.id.content_recycler);

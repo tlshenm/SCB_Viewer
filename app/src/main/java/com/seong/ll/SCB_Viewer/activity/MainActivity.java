@@ -1,8 +1,8 @@
 package com.seong.ll.SCB_Viewer.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,29 +22,35 @@ import com.seong.ll.SCB_Viewer.R;
 import com.seong.ll.SCB_Viewer.dummy.DummyContent;
 import com.seong.ll.SCB_Viewer.util.SCB_Const;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Toolbar mToolbar = null;
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     private FloatingActionButton mMainMenuFab = null;  // 메뉴 버튼
     private RecyclerView mFolderRecycler = null;        // Recycle 뷰
     private FolderRecyclerViewAdapter mFolderAdapter = null;
     private boolean isOpenFab = false;                  // 플로팅버튼 오픈 여부
-    private FrameLayout mFlFabOpen = null;             // 플로팅 버튼 오픈 후 배경 컴컴하게
+    private boolean isProcessAni = false;               // 애니메이션 실행중 여부
+    private FrameLayout mFlFabOpen = null;              // 플로팅 버튼 오픈 후 배경 컴컴하게
+
 
     private LinearLayout mContentAddFab = null;
     private LinearLayout mFolderEditFab = null;
     private LinearLayout mKeepViewFab = null;
 
+    private MainAnimationListener mMainAnimationListener = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        mBinding =  DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(R.layout.activity_main);
 
         //백그라운드로 넘길시 화면이 보이지 않게 된다.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        initView();
+    }
 
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    private void initView() {
+        setToolbarRegister(this,R.id.main_toolbar);
+        setToolbarState(TOOLBAR_STATE.NORMAL);
         mMainMenuFab = (FloatingActionButton) findViewById(R.id.main_menu_fab);
         mFolderRecycler = (RecyclerView) findViewById(R.id.folder_recycler);
         mFlFabOpen = (FrameLayout)findViewById(R.id.folder_open_fab_fl);
@@ -53,13 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFolderEditFab = (LinearLayout) findViewById(R.id.open_edit_ll);
         mKeepViewFab = (LinearLayout) findViewById(R.id.open_keep_view_ll);
 
-        mFlFabOpen.setOnClickListener(this);
-        mMainMenuFab.setOnClickListener(this);
 
+        mFolderAdapter = new FolderRecyclerViewAdapter(this, DummyContent.ITEMS);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.FOLDER_COLUMN_COUNT);
         mFolderRecycler.setLayoutManager(gridLayoutManager);
-        mFolderAdapter = new FolderRecyclerViewAdapter(this, DummyContent.ITEMS);
+
         mFolderRecycler.setAdapter(mFolderAdapter);
+
         mFolderRecycler.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
@@ -71,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showViews();
             }
         });
+        mFlFabOpen.setOnClickListener(this);
+        mMainMenuFab.setOnClickListener(this);
     }
+
 
     /**
      * 툴바를 숨긴다.
@@ -94,18 +103,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 플로팅 버튼 On/Off 애니메이션 및 동작 설정
      */
-    private void fabOnOffAnimation() {
+    private void fabOnOffAnimation(boolean isOpen) {
         Animation rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);    // 플로팅 버튼 회전
         Animation rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);  // 플로팅 버튼 회전
         Animation visible_alpha = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.visible_alpha);      // 페이지 투명도
         Animation gone_alpha = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.gone_alpha);            // 페이지 투명도
-
         Animation fab_open= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);            // 페이지 투명도
         Animation fab_close= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);            // 페이지 투명도
-
-
-
-        if (isOpenFab) {
+        
+        if (isOpen) {
             isOpenFab = false;
             mMainMenuFab.startAnimation(rotate_backward);   // 메뉴버튼 X로
 
@@ -173,11 +179,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_menu_fab:
-                fabOnOffAnimation();
+                fabOnOffAnimation(isOpenFab);
                 break;
             case R.id.folder_open_fab_fl:
-                fabOnOffAnimation();
+                fabOnOffAnimation(isOpenFab);
+
                 break;
+        }
+    }
+
+
+
+    private class MainAnimationListener implements Animation.AnimationListener{
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+            isProcessAni = true;
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            isProcessAni =false;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
         }
     }
 }

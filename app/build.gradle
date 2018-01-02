@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//xml의 id를 바로 클래스에서 사용할수있게
+//    dataBinding {
+//        enabled = true
+//    }
 }
 
 dependencies {
