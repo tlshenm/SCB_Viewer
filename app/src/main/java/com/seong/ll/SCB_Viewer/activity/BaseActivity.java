@@ -20,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Toolbar mToolbar = null;                                      // 상단 툴바
 
     protected enum TOOLBAR_STATE {
+        // 일반, 백버튼 노출
         NORMAL, BACK
     }
 

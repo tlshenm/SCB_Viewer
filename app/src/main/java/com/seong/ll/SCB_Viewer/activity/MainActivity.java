@@ -1,8 +1,11 @@
 package com.seong.ll.SCB_Viewer.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +17,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.seong.ll.SCB_Viewer.adapter.FolderRecyclerViewAdapter;
 import com.seong.ll.SCB_Viewer.R;
@@ -34,8 +42,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout mContentAddFab = null;
     private LinearLayout mFolderEditFab = null;
     private LinearLayout mKeepViewFab = null;
-
-    private MainAnimationListener mMainAnimationListener = null;
+    private Button mContinueViewBtn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mFolderEditFab = (LinearLayout) findViewById(R.id.open_edit_ll);
         mKeepViewFab = (LinearLayout) findViewById(R.id.open_keep_view_ll);
 
+        mContinueViewBtn = (Button)findViewById(R.id.continue_view_btn);
 
         mFolderAdapter = new FolderRecyclerViewAdapter(this, DummyContent.ITEMS);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.FOLDER_COLUMN_COUNT);
@@ -79,6 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
         mFlFabOpen.setOnClickListener(this);
         mMainMenuFab.setOnClickListener(this);
+        mContinueViewBtn.setOnClickListener(this);
     }
 
 
@@ -87,9 +96,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void hideViews() {
         mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mMainMenuFab.getLayoutParams();
-        int fabBottomMargin = lp.bottomMargin;
+        FrameLayout.LayoutParams mainMenuFabFL = (FrameLayout.LayoutParams) mMainMenuFab.getLayoutParams();
+        FrameLayout.LayoutParams continueViewBtnFL = (FrameLayout.LayoutParams) mContinueViewBtn.getLayoutParams();
+
+
+        int fabBottomMargin = mainMenuFabFL.bottomMargin;
+        int btnBottomMargin = continueViewBtnFL.bottomMargin;
+
         mMainMenuFab.animate().translationY(mMainMenuFab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+        mContinueViewBtn.animate().translationY(mContinueViewBtn.getHeight() + btnBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
     }
 
     /**
@@ -98,19 +113,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void showViews() {
         mToolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
         mMainMenuFab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        mContinueViewBtn.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
                                
     /**
      * 플로팅 버튼 On/Off 애니메이션 및 동작 설정
      */
     private void fabOnOffAnimation(boolean isOpen) {
+        isProcessAni = true;
         Animation rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);    // 플로팅 버튼 회전
         Animation rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);  // 플로팅 버튼 회전
         Animation visible_alpha = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.visible_alpha);      // 페이지 투명도
         Animation gone_alpha = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.gone_alpha);            // 페이지 투명도
-        Animation fab_open= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);            // 페이지 투명도
-        Animation fab_close= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);            // 페이지 투명도
-        
+        Animation fab_open= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);                 // 플로팅 버튼 투명도
+        Animation fab_close= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);               // 플로팅 버튼 투명도
+
         if (isOpen) {
             isOpenFab = false;
             mMainMenuFab.startAnimation(rotate_backward);   // 메뉴버튼 X로
@@ -131,8 +148,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             mFlFabOpen.startAnimation(visible_alpha);
             mFlFabOpen.setVisibility(View.VISIBLE);
-
         }
+
+        // mFlFabOpen 클릭이벤트가 연속으로 눌리면 UI동작이 이상해지는 오류로인한 딜레이 적용
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                isProcessAni =false;
+            }
+        }, 250);
 
     }
 
@@ -157,6 +180,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_sort);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         return true;
     }
 
@@ -181,30 +211,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.main_menu_fab:
                 fabOnOffAnimation(isOpenFab);
                 break;
+            // 플로팅버튼 OPEN상태 Dim
             case R.id.folder_open_fab_fl:
+                if(isProcessAni) {
+                    return;
+                }
                 fabOnOffAnimation(isOpenFab);
-
                 break;
-        }
-    }
-
-
-
-    private class MainAnimationListener implements Animation.AnimationListener{
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            isProcessAni = true;
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            isProcessAni =false;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
+            case R.id.continue_view_btn:
+                break;
 
         }
     }
+
 }

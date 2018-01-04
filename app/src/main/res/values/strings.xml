@@ -7,4 +7,19 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sort">정렬</string>
     <string name="setting">설정</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+
 </resources>

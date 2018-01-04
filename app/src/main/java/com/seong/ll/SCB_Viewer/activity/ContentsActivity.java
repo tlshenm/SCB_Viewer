@@ -31,7 +31,8 @@ public class ContentsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         setToolbarRegister(this,R.id.content_toolbar);
-        setToolBarSetting();
+        setToolbarState(TOOLBAR_STATE.BACK);
+
         mContentAddFab = (FloatingActionButton) findViewById(R.id.content_add_fab);
         mContentRecycler = (RecyclerView) findViewById(R.id.content_recycler);
 
@@ -48,20 +49,6 @@ public class ContentsActivity extends BaseActivity {
             @Override
             public void onShow() {
                 showViews();
-            }
-        });
-    }
-    
-    private void setToolBarSetting(){
-        mToolbar = (Toolbar) findViewById(R.id.content_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }
