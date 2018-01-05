@@ -1,14 +1,13 @@
 package com.seong.ll.SCB_Viewer.activity;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +16,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.seong.ll.SCB_Viewer.adapter.FolderRecyclerViewAdapter;
 import com.seong.ll.SCB_Viewer.R;
@@ -64,9 +59,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mContentAddFab =  (LinearLayout)findViewById(R.id.open_add_ll);
         mFolderEditFab = (LinearLayout) findViewById(R.id.open_edit_ll);
-        mKeepViewFab = (LinearLayout) findViewById(R.id.open_keep_view_ll);
+//        mKeepViewFab = (LinearLayout) findViewById(R.id.open_keep_view_ll);
 
-        mContinueViewBtn = (Button)findViewById(R.id.continue_view_btn);
+        mContinueViewBtn = (Button)findViewById(R.id.bottom_btn);
 
         mFolderAdapter = new FolderRecyclerViewAdapter(this, DummyContent.ITEMS);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.FOLDER_COLUMN_COUNT);
@@ -87,6 +82,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
         mFlFabOpen.setOnClickListener(this);
         mMainMenuFab.setOnClickListener(this);
+        mContentAddFab.setOnClickListener(this);
+        mFolderEditFab.setOnClickListener(this);
         mContinueViewBtn.setOnClickListener(this);
     }
 
@@ -134,7 +131,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             mContentAddFab.startAnimation(fab_close);       //
             mFolderEditFab.startAnimation(fab_close);
-            mKeepViewFab.startAnimation(fab_close);
+//            mKeepViewFab.startAnimation(fab_close);
 
             mFlFabOpen.startAnimation(gone_alpha);
             mFlFabOpen.setVisibility(View.GONE);
@@ -144,7 +141,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             mContentAddFab.startAnimation(fab_open);
             mFolderEditFab.startAnimation(fab_open);
-            mKeepViewFab.startAnimation(fab_open);
+//            mKeepViewFab.startAnimation(fab_open);
 
             mFlFabOpen.startAnimation(visible_alpha);
             mFlFabOpen.setVisibility(View.VISIBLE);
@@ -157,6 +154,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }, 250);
 
+    }
+
+
+    private void showSortPopUp() {
+        // 저장된 정렬방식 조회
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        final CharSequence[] items = getResources().getStringArray(R.array.folder_sort_array);
+        dialog.setTitle(getResources().getString(R.string.sort));
+
+        dialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        //Dao 연결    CREATE,     폴더 만들어진 순
+                        break;
+                    case 1:
+                        //ABC,        // 가나다 순
+                        break;
+                    case 2:
+                        //ABC_REVERSE // 가나다 역순
+                        break;
+                }
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     @Override
@@ -180,13 +205,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_sort);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
         return true;
     }
 
@@ -196,14 +214,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this,SettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_sort:
+                    showSortPopUp();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -211,14 +234,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.main_menu_fab:
                 fabOnOffAnimation(isOpenFab);
                 break;
-            // 플로팅버튼 OPEN상태 Dim
+            case R.id.bottom_btn:
+
+                break;
+            case R.id.open_add_ll:
+                // 추가하기
+                break;
+            case R.id.open_edit_ll:
+                //폴더편집
+                break;
             case R.id.folder_open_fab_fl:
                 if(isProcessAni) {
                     return;
                 }
                 fabOnOffAnimation(isOpenFab);
-                break;
-            case R.id.continue_view_btn:
                 break;
 
         }

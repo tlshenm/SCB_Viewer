@@ -6,7 +6,7 @@
         android:id="@+id/action_sort"
         android:title="@string/sort"
         android:orderInCategory="100"
-        app:actionViewClass="android.widget.Spinner"
+        android:icon="@drawable/ic_sort_white_24dp"
         app:showAsAction="always" >
     </item>
 

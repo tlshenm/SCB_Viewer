@@ -19,6 +19,8 @@ import java.util.List;
 
 
 public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
     private Context mContext = null;
     private final List<DummyItem> mValues;
     private static final int TYPE_HEADER = 1;

@@ -10,16 +10,16 @@
     <string name="title_activity_settings">Settings</string>
 
 
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+    <string-array name="folder_sort_array">
+        <item>폴더생성날짜</item>
+        <item>이름</item>
+        <item>이름 역순</item>
     </string-array>
 
+    <string-array name="content_sort_array">
+        <item>이름</item>
+        <item>이어보기</item>
+        <item>NEW</item>
+    </string-array>
 
 </resources>
