@@ -1,1 +1,2 @@
-include ':app'
+include ':app' ,':sishin_COMMON_LIB'
+project(':sishin_COMMON_LIB').projectDir = new File('../sishin_COMMON/Common')

@@ -1,19 +1,15 @@
 package com.seong.ll.SCB_Viewer.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import com.seong.ll.SCB_Viewer.R;
 import com.seong.ll.SCB_Viewer.adapter.ContentRecyclerViewAdapter;
-import com.seong.ll.SCB_Viewer.adapter.FolderRecyclerViewAdapter;
 import com.seong.ll.SCB_Viewer.dummy.DummyContent;
 import com.seong.ll.SCB_Viewer.util.SCB_Const;
 
@@ -36,7 +32,7 @@ public class ContentsActivity extends BaseActivity {
         mContentAddFab = (FloatingActionButton) findViewById(R.id.content_add_fab);
         mContentRecycler = (RecyclerView) findViewById(R.id.content_recycler);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.FOLDER_COLUMN_COUNT);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.LIST_COLUMN_COUNT);
         mContentRecycler.setLayoutManager(gridLayoutManager);
         mContentAdapter = new ContentRecyclerViewAdapter(this,DummyContent.ITEMS);
         mContentRecycler.setAdapter(mContentAdapter);

@@ -8,7 +8,7 @@ import com.seong.ll.SCB_Viewer.R;
  */
 
 public class SCB_Const {
-    public static final int FOLDER_COLUMN_COUNT = 4;                   // List Col 개수
+    public static final int LIST_COLUMN_COUNT = 4;                   // List Col 개수
 
     /**
      * 폴더 정렬

@@ -8,6 +8,9 @@ import android.view.WindowManager;
 
 import com.seong.ll.SCB_Viewer.R;
 
+/**
+ * 시작 화면
+ */
 public class IntroActivity extends AppCompatActivity {
 
     @Override

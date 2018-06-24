@@ -22,11 +22,15 @@ import android.widget.LinearLayout;
 
 import com.seong.ll.SCB_Viewer.adapter.FolderRecyclerViewAdapter;
 import com.seong.ll.SCB_Viewer.R;
+import com.seong.ll.SCB_Viewer.constants.Const;
 import com.seong.ll.SCB_Viewer.dummy.DummyContent;
 import com.seong.ll.SCB_Viewer.util.SCB_Const;
 
+/**
+ * 메인 화면
+ */
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-    private FloatingActionButton mMainMenuFab = null;  // 메뉴 버튼
+    private FloatingActionButton mFabMainMenu = null;  // 메뉴 버튼
     private RecyclerView mFolderRecycler = null;        // Recycle 뷰
     private FolderRecyclerViewAdapter mFolderAdapter = null;
     private boolean isOpenFab = false;                  // 플로팅버튼 오픈 여부
@@ -34,10 +38,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private FrameLayout mFlFabOpen = null;              // 플로팅 버튼 오픈 후 배경 컴컴하게
 
 
-    private LinearLayout mContentAddFab = null;
-    private LinearLayout mFolderEditFab = null;
+    private LinearLayout mLlFabContentAdd = null;         // 만화추가 버튼
+    private LinearLayout mLlFabFolderEdit = null;         // 폴더 편집
     private LinearLayout mKeepViewFab = null;
-    private Button mContinueViewBtn = null;
+    private Button mBtnContinueView = null;             // 이어보기 버튼
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +57,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initView() {
         setToolbarRegister(this,R.id.main_toolbar);
         setToolbarState(TOOLBAR_STATE.NORMAL);
-        mMainMenuFab = (FloatingActionButton) findViewById(R.id.main_menu_fab);
+        mFabMainMenu = (FloatingActionButton) findViewById(R.id.main_menu_fab);
         mFolderRecycler = (RecyclerView) findViewById(R.id.folder_recycler);
         mFlFabOpen = (FrameLayout)findViewById(R.id.folder_open_fab_fl);
 
-        mContentAddFab =  (LinearLayout)findViewById(R.id.open_add_ll);
-        mFolderEditFab = (LinearLayout) findViewById(R.id.open_edit_ll);
+        mLlFabContentAdd =  (LinearLayout)findViewById(R.id.open_add_ll);
+        mLlFabFolderEdit = (LinearLayout) findViewById(R.id.open_edit_ll);
 //        mKeepViewFab = (LinearLayout) findViewById(R.id.open_keep_view_ll);
 
-        mContinueViewBtn = (Button)findViewById(R.id.bottom_btn);
+        mBtnContinueView = (Button)findViewById(R.id.bottom_btn);
 
         mFolderAdapter = new FolderRecyclerViewAdapter(this, DummyContent.ITEMS);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.FOLDER_COLUMN_COUNT);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, SCB_Const.LIST_COLUMN_COUNT);
         mFolderRecycler.setLayoutManager(gridLayoutManager);
 
         mFolderRecycler.setAdapter(mFolderAdapter);
@@ -81,10 +85,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
         mFlFabOpen.setOnClickListener(this);
-        mMainMenuFab.setOnClickListener(this);
-        mContentAddFab.setOnClickListener(this);
-        mFolderEditFab.setOnClickListener(this);
-        mContinueViewBtn.setOnClickListener(this);
+        mFabMainMenu.setOnClickListener(this);
+        mLlFabContentAdd.setOnClickListener(this);
+        mLlFabFolderEdit.setOnClickListener(this);
+        mBtnContinueView.setOnClickListener(this);
     }
 
 
@@ -93,15 +97,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void hideViews() {
         mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-        FrameLayout.LayoutParams mainMenuFabFL = (FrameLayout.LayoutParams) mMainMenuFab.getLayoutParams();
-        FrameLayout.LayoutParams continueViewBtnFL = (FrameLayout.LayoutParams) mContinueViewBtn.getLayoutParams();
+        FrameLayout.LayoutParams mainMenuFabFL = (FrameLayout.LayoutParams) mFabMainMenu.getLayoutParams();
+        FrameLayout.LayoutParams continueViewBtnFL = (FrameLayout.LayoutParams) mBtnContinueView.getLayoutParams();
 
 
         int fabBottomMargin = mainMenuFabFL.bottomMargin;
         int btnBottomMargin = continueViewBtnFL.bottomMargin;
 
-        mMainMenuFab.animate().translationY(mMainMenuFab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-        mContinueViewBtn.animate().translationY(mContinueViewBtn.getHeight() + btnBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+        mFabMainMenu.animate().translationY(mFabMainMenu.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+        mBtnContinueView.animate().translationY(mBtnContinueView.getHeight() + btnBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
     }
 
     /**
@@ -109,8 +113,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void showViews() {
         mToolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-        mMainMenuFab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-        mContinueViewBtn.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        mFabMainMenu.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        mBtnContinueView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
                                
     /**
@@ -127,20 +131,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (isOpen) {
             isOpenFab = false;
-            mMainMenuFab.startAnimation(rotate_backward);   // 메뉴버튼 X로
+            mFabMainMenu.startAnimation(rotate_backward);   // 메뉴버튼 X로
 
-            mContentAddFab.startAnimation(fab_close);       //
-            mFolderEditFab.startAnimation(fab_close);
+            mLlFabContentAdd.startAnimation(fab_close);       //
+            mLlFabFolderEdit.startAnimation(fab_close);
 //            mKeepViewFab.startAnimation(fab_close);
 
             mFlFabOpen.startAnimation(gone_alpha);
             mFlFabOpen.setVisibility(View.GONE);
         } else {
             isOpenFab = true;
-            mMainMenuFab.startAnimation(rotate_forward);    // 메뉴버튼 +로
+            mFabMainMenu.startAnimation(rotate_forward);    // 메뉴버튼 +로
 
-            mContentAddFab.startAnimation(fab_open);
-            mFolderEditFab.startAnimation(fab_open);
+            mLlFabContentAdd.startAnimation(fab_open);
+            mLlFabFolderEdit.startAnimation(fab_open);
 //            mKeepViewFab.startAnimation(fab_open);
 
             mFlFabOpen.startAnimation(visible_alpha);
@@ -238,6 +242,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.open_add_ll:
+                Intent intent = new Intent(MainActivity.this, InsertActivity.class);
+                startActivityForResult(intent, Const.REQ_SELECT_IMAGE);
                 // 추가하기
                 break;
             case R.id.open_edit_ll:
@@ -253,4 +259,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent = null;
+        switch (requestCode) {
+            case Const.REQ_SELECT_IMAGE:{
+
+            }
+            break;
+
+            default:
+                break;
+
+        }
+    }
 }

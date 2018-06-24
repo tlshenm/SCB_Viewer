@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.seong.ll.SCB_Viewer.R;
 import com.seong.ll.SCB_Viewer.activity.ContentsActivity;
@@ -36,7 +35,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private boolean isPositionHeader(int position) {
-        return position < SCB_Const.FOLDER_COLUMN_COUNT;
+        return position < SCB_Const.LIST_COLUMN_COUNT;
     }
 
 
@@ -77,7 +76,7 @@ public class FolderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         //현재 positon이 Header position이 아닐 경우 in
         if (!isPositionHeader(position)) {
             FolderViewHolder holder = (FolderViewHolder) viewHolder;
-            final int accuratePosition = position-SCB_Const.FOLDER_COLUMN_COUNT;
+            final int accuratePosition = position-SCB_Const.LIST_COLUMN_COUNT;
             holder.mItem = mValues.get(accuratePosition);
             holder.mIdView.setText(mValues.get(accuratePosition).id);
             holder.mContentView.setText(mValues.get(accuratePosition).content);
