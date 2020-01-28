@@ -11,10 +11,10 @@ public class ImageInfoData extends FileInfoData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String id;
+	private String name;
 	private String path;
 	private Bitmap bitmapImg;
 	private byte[] bitmapStr;
-	private boolean checkedState;
 
 	public String getId() {
 		return id;
@@ -22,6 +22,14 @@ public class ImageInfoData extends FileInfoData implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPath() {
@@ -38,14 +46,6 @@ public class ImageInfoData extends FileInfoData implements Serializable {
 
 	public void setBitmapStr(byte[] bitmapStr) {
 		this.bitmapStr = bitmapStr;
-	}
-
-	public boolean isCheckedState() {
-		return checkedState;
-	}
-
-	public void setCheckedState(boolean checkedState) {
-		this.checkedState = checkedState;
 	}
 
 	public Bitmap getBitmapImg() {

@@ -3,11 +3,14 @@ package com.seong.ll.SCB_Viewer.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.seong.ll.SCB_Viewer.R;
+
+import java.io.File;
 
 
 /**
@@ -15,6 +18,7 @@ import com.seong.ll.SCB_Viewer.R;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+    protected static final String FIX_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".scb_viewer"; // 기본폴더 Path
 
     protected ProgressDialog mProgressDialog = null;
     protected Toolbar mToolbar = null;                                      // 상단 툴바

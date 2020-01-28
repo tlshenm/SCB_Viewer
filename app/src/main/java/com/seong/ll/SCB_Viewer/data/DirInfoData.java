@@ -2,20 +2,25 @@ package com.seong.ll.SCB_Viewer.data;
 
 import java.util.ArrayList;
 
-public class DirInfoData {
+public class DirInfoData extends FileInfoData {
 
-    private int dirId;
+    /**
+     * 공통코드 정보 클래스
+     */
+    private static final long serialVersionUID = 1L;
+
+    private int id;
     private String name;                      // 이름
     private String path;                      // 경로
-    private String representativeImagePath;     // 대표이미지 경로
+    private String representativeImagePath;   // 대표이미지 경로
     private long date;                        // 날짜
     private boolean isCheck;                  // 선택여부
     private boolean isLock;                   // 디렉토리 잠금 여부
     private boolean isSee;                    // 디렉토리 본 여부
     private long lastSeeDate;                 // 마지막으로 본 날짜
-    private int savePosition;                 //저장된 페이지
-
-    private int mTotalPage = 0;                     // 총페이지
+    private int savePosition;                 // 저장된 페이지
+    private int totalPage = 0;                // 총페이지
+    private boolean isAdded;                  // 추가여부
 
     private ArrayList<ImageInfoData> imageInfoList = null;  //이미지 목록
 
@@ -32,12 +37,12 @@ public class DirInfoData {
         this.imageInfoList = imageInfoList;
     }
 
-    public int getDirId() {
-        return dirId;
+    public int getId() {
+        return id;
     }
 
-    public void setDirId(int dirId) {
-        this.dirId = dirId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -96,6 +101,14 @@ public class DirInfoData {
         isSee = see;
     }
 
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
+    }
+
     public long getLastSeeDate() {
         return lastSeeDate;
     }
@@ -112,11 +125,11 @@ public class DirInfoData {
         this.savePosition = savePosition;
     }
 
-    public int getmTotalPage() {
-        return mTotalPage;
+    public int getTotalPage() {
+        return totalPage;
     }
 
-    public void setmTotalPage(int mTotalPage) {
-        this.mTotalPage = mTotalPage;
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
     }
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class FileInfoData implements Serializable {
     public enum FILE_TYPE {
-        IMAGE, ZIP
+        DIR, IMAGE, ZIP
     }
     private FILE_TYPE fileType;
 
