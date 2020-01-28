@@ -1,0 +1,3 @@
+[submodule "sishin_Common"]
+	path = sishin_Common
+	url = https://github.com/tlshenm/sishin_Common.git
